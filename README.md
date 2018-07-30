@@ -16,3 +16,4 @@ KMP 알고리즘은 이를 O(N+M) 에 해결할 수 있다.
 4. P4354 문자열 제곱 https://www.acmicpc.net/problem/4354
 5. P1305 광고 https://www.acmicpc.net/problem/1305
 6. P11585 속타는 저녁 메뉴 https://www.acmicpc.net/problem/11585
++  카카오 예선 : 브라이이언의 고민 https://programmers.co.kr/learn/courses/30/lessons/1830
