@@ -14,3 +14,5 @@ KMP 알고리즘은 이를 O(N+M) 에 해결할 수 있다.
 2. P2401 최대 문자열 붙여넣기 https://www.acmicpc.net/problem/2401
 3. P2902 KMP는 왜 KMP일까? https://www.acmicpc.net/problem/2902
 4. P4354 문자열 제곱 https://www.acmicpc.net/problem/4354
+5. P1305 광고 https://www.acmicpc.net/problem/1305
+6. P11585 속타는 저녁 메뉴 https://www.acmicpc.net/problem/11585
