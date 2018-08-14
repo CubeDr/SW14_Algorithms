@@ -50,9 +50,10 @@ vector<int> getSuffixArray(const string& s) {
 }
 
 int main() {
-    string str = "alohomora";
+    string str;
+    cin >> str;
     vector<int> suffixArray = getSuffixArray(str);
     for(int i=0; i<suffixArray.size(); i++)
-        cout << i << " : " << suffixArray[i] << " : " << str.substr(suffixArray[i]) << endl;
+        cout << str.substr(suffixArray[i]) << endl;
     return 0;
 }
