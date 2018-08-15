@@ -5,14 +5,19 @@
 
 using namespace std;
 
+// 접미사들을 문자열 순서대로 정렬하기 위한 비교자
 struct Comparator {
+    // t개까지 비교했을 때 각 접미사가 속한 그룹
     const vector<int> &group;
     int t;
 
-    Comparator(const vector<int> &_group, int _t): group(_group), t(_t) {}
+    Comparator(const vector<int> &_g, int _t): group(_g), t(_t) {}
 
     bool operator() (int a, int b) {
-        if( group[a] != group[b] ) return group[a] < group[b];
+        // 이미 비교를 했던 접미사들이면 이전에 비교한 결과 반환
+        if(group[a] != group[b]) return group[a] < group[b];
+        // 앞 t 개가 똑같으면 그 다음 t개 문자로 비교
+        // 이게 다르면 다른 그룹으로 분류되고 같으면 같은 그룹으로 분류됨
         return group[a+t] < group[b+t];
     }
 };
