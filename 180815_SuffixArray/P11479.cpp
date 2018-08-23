@@ -61,7 +61,7 @@ vector<int> getLongestCommonPrefixArray(const string &s, const vector<int> &sa) 
         pos[sa[i]] = i;
 
     vector<int> lcp(sa.size());
-
+    lcp[0] = 0;
 
     // 일치하는 개수
     int k=0;
@@ -87,8 +87,8 @@ int main() {
     string str;
     cin >> str;
     vector<int> lcp = getLongestCommonPrefixArray(str, getSuffixArray(str));
-    int n = str.size();
-    int duplicates = 0;
+    unsigned long long n = str.size();
+    unsigned long long duplicates = 0;
     for(int i=0; i<lcp.size(); i++)
         duplicates += lcp[i];
     cout << (n*(n+1)/2) - duplicates;
