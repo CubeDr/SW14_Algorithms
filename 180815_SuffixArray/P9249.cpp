@@ -6,13 +6,14 @@
 
 using namespace std;
 
+int group[300000];
+
 struct Comparator {
-    vector<int> g;
     int t;
 
     bool operator() (int a, int b) {
-        if(g[a] != g[b]) return g[a] < g[b];
-        return g[a+t] < g[b+t];
+        if(group[a] != group[b]) return group[a] < group[b];
+        return group[a+t] < group[b+t];
     }
 };
 
@@ -23,7 +24,6 @@ int lcp[200005];
 
 void getSuffixArray() {
     int t=1;
-    vector<int> group(n+1);
     for(int i=0; i<n; i++)
         group[i] = str[i];
     group[n] = -1;
@@ -34,7 +34,6 @@ void getSuffixArray() {
     vector<int> g(n+1);
     Comparator c;
     while(t < n) {
-        c.g = group;
         c.t = t;
         sort(sa, sa+n, c);
 
@@ -49,7 +48,9 @@ void getSuffixArray() {
             else
                 g[sa[i]] = g[sa[i-1]];
         }
-        group = g;
+
+        for(int i=0; i<=n; i++)
+            group[i] = g[i];
     }
 }
 
