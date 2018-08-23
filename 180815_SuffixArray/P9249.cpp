@@ -1,6 +1,6 @@
 #include <cstdio>
-#include <vector>
 #include <string>
+#include <vector>
 #include <algorithm>
 #include <cstring>
 
@@ -16,14 +16,18 @@ struct Comparator {
     }
 };
 
-vector<int> getSuffixArray(const char *str, int n) {
+char str[200005];
+int offset, n;
+int sa[200005];
+int lcp[200005];
+
+void getSuffixArray() {
     int t=1;
     vector<int> group(n+1);
     for(int i=0; i<n; i++)
         group[i] = str[i];
     group[n] = -1;
 
-    vector<int> sa(n);
     for(int i=0; i<n; i++)
         sa[i] = i;
 
@@ -32,7 +36,7 @@ vector<int> getSuffixArray(const char *str, int n) {
     while(t < n) {
         c.g = group;
         c.t = t;
-        sort(sa.begin(), sa.end(), c);
+        sort(sa, sa+n, c);
 
         t*=2;
         if(t > n) break;
@@ -47,18 +51,12 @@ vector<int> getSuffixArray(const char *str, int n) {
         }
         group = g;
     }
-
-    return sa;
 }
 
-vector<int> getLongestCommonPrefixArray(const string &str, const vector<int> &sa) {
-    const char* c_str = str.c_str();
-    int n = str.size();
+void getLongestCommonPrefixArray() {
     vector<int> pos(n);
     for(int i=0; i<n; i++)
         pos[sa[i]] = i;
-
-    vector<int> lcp(n);
 
     int k=0;
 
@@ -66,34 +64,31 @@ vector<int> getLongestCommonPrefixArray(const string &str, const vector<int> &sa
         if(pos[i] == 0) continue;
 
         int t = sa[pos[i]-1];
-        while(c_str[i+k] == c_str[t+k]) k++;
+        while(str[i+k] == str[t+k]) k++;
         lcp[pos[i]] = k;
 
         if(k) k--;
     }
-
-    return lcp;
 }
 
 int main() {
-    char str[200002];
-    int offset, n;
     scanf("%s", str);
     offset = strlen(str);
     str[offset] = '$';
     scanf("%s", str+offset+1);
     n = strlen(str);
-    vector<int> sa = getSuffixArray(str, n);
-    vector<int> lcp = getLongestCommonPrefixArray(str, sa);
+    getSuffixArray();
+    getLongestCommonPrefixArray();
 
     int max = 0;
     int maxIdx;
     for(int i=1; i<n; i++) {
-        if( (sa[i] >= offset && sa[i-1] >= offset)
-           || (sa[i] < offset && sa[i-1] < offset)) continue;
-        if(lcp[i] > max) {
-            max = lcp[i];
-            maxIdx = i;
+        if( (sa[i] < offset && sa[i-1] > offset)
+           || (sa[i] > offset && sa[i-1] < offset) ) {
+            if(lcp[i] > max) {
+                max = lcp[i];
+                maxIdx = i;
+            }
         }
     }
 
