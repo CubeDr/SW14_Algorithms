@@ -1,7 +1,8 @@
-#include <iostream>
+#include <cstdio>
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <cstring>
 
 using namespace std;
 
@@ -9,17 +10,13 @@ struct Comparator {
     vector<int> g;
     int t;
 
-    Comparator(vector<int> _g, int _t): g(_g), t(_t) {}
-
     bool operator() (int a, int b) {
         if(g[a] != g[b]) return g[a] < g[b];
         return g[a+t] < g[b+t];
     }
 };
 
-vector<int> getSuffixArray(const string &str) {
-    int n = str.size();
-
+vector<int> getSuffixArray(const char *str, int n) {
     int t=1;
     vector<int> group(n+1);
     for(int i=0; i<n; i++)
@@ -30,14 +27,16 @@ vector<int> getSuffixArray(const string &str) {
     for(int i=0; i<n; i++)
         sa[i] = i;
 
+    vector<int> g(n+1);
+    Comparator c;
     while(t < n) {
-        Comparator c(group, t);
+        c.g = group;
+        c.t = t;
         sort(sa.begin(), sa.end(), c);
 
         t*=2;
         if(t > n) break;
 
-        vector<int> g(n+1);
         g[n] = -1;
         g[sa[0]] = 0;
         for(int i=1; i<n; i++) {
@@ -77,16 +76,19 @@ vector<int> getLongestCommonPrefixArray(const string &str, const vector<int> &sa
 }
 
 int main() {
-    string str1, str2;
-    cin >> str1 >> str2;
-    string str = str1 + '$' + str2;
-    int offset = str1.size();
-    vector<int> sa = getSuffixArray(str);
+    char str[200002];
+    int offset, n;
+    scanf("%s", str);
+    offset = strlen(str);
+    str[offset] = '$';
+    scanf("%s", str+offset+1);
+    n = strlen(str);
+    vector<int> sa = getSuffixArray(str, n);
     vector<int> lcp = getLongestCommonPrefixArray(str, sa);
 
     int max = 0;
     int maxIdx;
-    for(int i=1; i<sa.size(); i++) {
+    for(int i=1; i<n; i++) {
         if( (sa[i] >= offset && sa[i-1] >= offset)
            || (sa[i] < offset && sa[i-1] < offset)) continue;
         if(lcp[i] > max) {
@@ -95,6 +97,8 @@ int main() {
         }
     }
 
-    cout << max << endl;
-    cout << str.substr(sa[maxIdx], max);
+    printf("%d\n", max);
+    str[sa[maxIdx] + max] = '\0';
+    printf("%s", str+sa[maxIdx]);
+    return 0;
 }
